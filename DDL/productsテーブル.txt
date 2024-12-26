@@ -1,0 +1,13 @@
+create table products (
+  id uuid not null
+  , name character varying(200) not null
+  , description text not null
+  , price integer not null
+  , category_id integer not null
+  , min_stock_level integer not null
+  , created_at timestamp(6) without time zone default CURRENT_TIMESTAMP not null
+  , current_stock integer default 0
+  , last_updated timestamp(6) without time zone default CURRENT_TIMESTAMP not null
+  , primary key (id)
+);
+

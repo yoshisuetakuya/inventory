@@ -1,0 +1,11 @@
+create table inventory_data (
+  transactionid uuid not null
+  , product_id uuid not null
+  , quantity integer not null
+  , transaction_type character varying(10) not null
+  , timestamp timestamp(6) without time zone default CURRENT_TIMESTAMP not null
+  , location_id character varying(100) not null
+  , note text not null
+  , primary key (transactionid)
+  , foreign key (product_id) references public.products(id)
+);
