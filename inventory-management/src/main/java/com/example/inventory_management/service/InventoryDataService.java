@@ -31,7 +31,7 @@ public class InventoryDataService {
 			throw new IllegalArgumentException("商品が見つかりません");
 		}
 
-		// 在庫を再計算
+		// 在庫を計算
 		Long currentStock = inventoryInfomationService.calculateCurrentStock(dto.getProductId());
 
 		// 在庫数を更新
@@ -57,10 +57,10 @@ public class InventoryDataService {
 			throw new IllegalArgumentException("商品が見つかりません");
 		}
 
-		// 在庫を再計算
+		// 在庫を計算
 		Long currentStock = inventoryInfomationService.calculateCurrentStock(dto.getProductId());
 
-		// 在庫数を確認して更新
+		// 在庫数が不足していた場合
 		if (currentStock < dto.getQuantity()) {
 			throw new IllegalArgumentException("在庫が不足しています");
 		}

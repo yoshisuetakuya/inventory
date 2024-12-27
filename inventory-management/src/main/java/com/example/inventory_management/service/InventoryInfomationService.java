@@ -46,17 +46,17 @@ public class InventoryInfomationService {
 	// 現在の在庫数の計算メソッド
 	public Long calculateCurrentStock(UUID productId) {
 		// productIdで検索し合計値を取得
-		List<TransactionSumDto> transactionSummaries = transactionSumRepository.getQuantityByTransactionType(productId);
+		List<TransactionSumDto> transactionSum = transactionSumRepository.getQuantityByTransactionType(productId);
 
 		Long inQuantity = 0L;
 		Long outQuantity = 0L;
 
 		// IN とOUT を取得
-		for (TransactionSumDto summary : transactionSummaries) {
-			if ("IN".equalsIgnoreCase(summary.getTransactionType())) {
-				inQuantity = summary.getQuantity();
-			} else if ("OUT".equalsIgnoreCase(summary.getTransactionType())) {
-				outQuantity = summary.getQuantity();
+		for (TransactionSumDto sum : transactionSum) {
+			if ("IN".equals(sum.getTransactionType())) {
+				inQuantity = sum.getQuantity();
+			} else if ("OUT".equals(sum.getTransactionType())) {
+				outQuantity = sum.getQuantity();
 			}
 		}
 

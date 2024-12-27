@@ -25,7 +25,7 @@ public class ProductsService {
 		// 商品情報を保存
 		ProductsDto savedProduct = productsRepository.save(register);
 
-		// 保存されたデータを基にレスポンスを作成
+		// レスポンスを作成して返す
 		return new RegisterResponse(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(),
 				savedProduct.getPrice(), savedProduct.getCategoryId(), savedProduct.getMinStockLevel(),
 				savedProduct.getCreatedAt());
