@@ -9,6 +9,12 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         商品データを取得するためのDTOクラス
+ */
 @Entity
 @Getter
 @Setter

@@ -12,6 +12,15 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         商品情報を表すDTOクラス
+ *
+ *         このクラスはデータベースのproductsテーブルに対応している
+ *
+ */
 @Entity
 @Getter
 @Setter

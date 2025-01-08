@@ -6,6 +6,13 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         入出荷情報のレスポンスデータを表すクラス
+ *
+ */
 @Getter
 @Setter
 public class ResponseInOut {

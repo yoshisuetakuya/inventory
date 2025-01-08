@@ -10,6 +10,13 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         在庫管理の取引データを表すDTOクラス
+ *
+ */
 @Entity
 @Getter
 @Setter

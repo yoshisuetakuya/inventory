@@ -12,6 +12,14 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         在庫データを表すDTOクラス
+ *
+ *         このクラスはデータベースのinventory_dataテーブルに対応している
+ */
 @Entity
 @Getter
 @Setter

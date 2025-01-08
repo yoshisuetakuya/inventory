@@ -7,6 +7,13 @@ import com.example.inventory_management.dto.TransactionDto;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         取引情報のレスポンスデータを表すクラス
+ *
+ */
 @Getter
 @Setter
 public class TransactionResponse {

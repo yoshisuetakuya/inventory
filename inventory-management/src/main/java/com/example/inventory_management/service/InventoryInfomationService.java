@@ -15,6 +15,13 @@ import com.example.inventory_management.repository.TransactionSumRepository;
 import com.example.inventory_management.repository.Transactison;
 import com.example.inventory_management.response.StockResponse;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         在庫情報を管理するサービスクラス
+ *
+ */
 @Service
 public class InventoryInfomationService {
 
@@ -27,26 +34,43 @@ public class InventoryInfomationService {
 	@Autowired
 	private Transactison transactison;
 
-	// 商品IDに基づいて在庫を計算し、現在の在庫数の情報を返す
+	/**
+	 * 商品IDに基づいて在庫を計算し、現在の在庫情報を返す
+	 *
+	 * @param productId
+	 * @return 在庫情報
+	 */
 	public StockResponse getStockByProductId(UUID productId) {
 		// 現在の在庫数を取得
-		Long currentStock = calculateCurrentStock(productId);
+		final Long currentStock = calculateCurrentStock(productId);
 
-		ProductsDto productInfo = productsRepository.findById(productId).orElse(null);
+		final ProductsDto productInfo = productsRepository.findById(productId).orElse(null);
 
 		// StockResponseを作成して返す
 		return new StockResponse(productId, currentStock, productInfo.getMinStockLevel(), productInfo.getLastUpdated());
 	}
 
-	// 期間内の入出荷情報取得
+	/**
+	 * 期間内の取引情報取得メソッド
+	 * @param productId
+	 * @param from
+	 * @param to
+	 * @return 期間内の取引情報
+	 */
 	public List<TransactionDto> getInventoryTransactions(UUID productId, LocalDateTime from, LocalDateTime to) {
 		return transactison.findByProductIdAndTimestampBetween(productId, from, to);
 	}
 
-	// 現在の在庫数の計算メソッド
+	/**
+	 *
+	 * 現在の在庫数の計算メソッド
+	 *
+	 * @param productId
+	 * @return 現在の在庫数
+	 */
 	public Long calculateCurrentStock(UUID productId) {
 		// productIdで検索し合計値を取得
-		List<TransactionSumDto> transactionSum = transactionSumRepository.getQuantityByTransactionType(productId);
+		final List<TransactionSumDto> transactionSum = transactionSumRepository.getQuantityByTransactionType(productId);
 
 		Long inQuantity = 0L;
 		Long outQuantity = 0L;

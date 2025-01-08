@@ -11,6 +11,13 @@ import com.example.inventory_management.repository.GetProductsRepository;
 import com.example.inventory_management.repository.ProductsRepository;
 import com.example.inventory_management.response.RegisterResponse;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         商品の情報の登録と取得を行うサービスクラス
+ *
+ */
 @Service
 public class ProductsService {
 
@@ -20,10 +27,15 @@ public class ProductsService {
 	@Autowired
 	private GetProductsRepository getProductsRepository;
 
-	// 登録メソッド
+	/**
+	 * 商品情報登録メソッド
+	 *
+	 * @param register
+	 * @return 登録された商品の情報を含むレスポンス
+	 */
 	public RegisterResponse register(ProductsDto register) {
 		// 商品情報を保存
-		ProductsDto savedProduct = productsRepository.save(register);
+		final ProductsDto savedProduct = productsRepository.save(register);
 
 		// レスポンスを作成して返す
 		return new RegisterResponse(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(),
@@ -31,10 +43,15 @@ public class ProductsService {
 				savedProduct.getCreatedAt());
 	}
 
-	// 商品情報をIDで取得するメソッド
+	/**
+	 * 商品情報取得メソッド
+	 *
+	 * @param productId
+	 * @return 指定された商品IDの商品情報
+	 */
 	public GetProductsDto getProductById(UUID productId) {
 		// IDで商品を検索
-		GetProductsDto product = getProductsRepository.findById(productId).orElse(null);
+		final GetProductsDto product = getProductsRepository.findById(productId).orElse(null);
 		// 商品が見つからない場合は例外をスロー
 		if (product == null) {
 			throw new IllegalArgumentException("商品が見つかりません");

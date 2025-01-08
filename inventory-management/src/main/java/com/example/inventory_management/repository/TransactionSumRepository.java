@@ -10,7 +10,19 @@ import org.springframework.data.repository.query.Param;
 import com.example.inventory_management.dto.InventoryDataDto;
 import com.example.inventory_management.dto.TransactionSumDto;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         入荷と出荷の各値の合計数を取得するためのリポジトリインターフェース
+ *
+ */
 public interface TransactionSumRepository extends JpaRepository<InventoryDataDto, UUID> {
+	/**
+	 *
+	 * @param productId
+	 * @return 入荷と出荷の各値の合計
+	 */
 	@Query(value = """
 			SELECT
 			    SUM(quantity) as quantity,

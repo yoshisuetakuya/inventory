@@ -10,6 +10,13 @@ import com.example.inventory_management.repository.InventoryDataRepository;
 import com.example.inventory_management.repository.ProductsRepository;
 import com.example.inventory_management.response.ResponseInOut;
 
+/**
+ *
+ * @author 芳末拓也
+ *
+ *         商品の入荷および出荷処理を行うサービスクラス
+ *
+ */
 @Service
 public class InventoryDataService {
 
@@ -22,10 +29,15 @@ public class InventoryDataService {
 	@Autowired
 	private InventoryInfomationService inventoryInfomationService;
 
-	// 商品入荷処理
+	/**
+	 * 商品入荷処理メソッド
+	 *
+	 * @param dto
+	 * @return　入荷処理結果レスポンス
+	 */
 	public ResponseInOut arrival(InventoryDataDto dto) {
 		// 商品情報を取得
-		ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
+		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
 
 		if (product == null) {
 			throw new IllegalArgumentException("商品が見つかりません");
@@ -42,16 +54,21 @@ public class InventoryDataService {
 		// 入荷のトランザクションタイプを保存
 		dto.setTransactionType("IN");
 		// 保存
-		InventoryDataDto savedDto = inventoryDataRepository.save(dto);
+		final InventoryDataDto savedDto = inventoryDataRepository.save(dto);
 
 		return new ResponseInOut(savedDto.getTransactionId(), savedDto.getProductId(), savedDto.getQuantity(),
 				currentStock, "IN", LocalDateTime.now());
 	}
 
-	// 商品出荷処理
+	/**
+	 * 商品出荷処理メソッド
+	 *
+	 * @param dto
+	 * @return　出荷処理結果レスポンス
+	 */
 	public ResponseInOut shipment(InventoryDataDto dto) {
 		// 商品情報を取得
-		ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
+		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
 
 		if (product == null) {
 			throw new IllegalArgumentException("商品が見つかりません");
@@ -73,7 +90,7 @@ public class InventoryDataService {
 		// 出荷のトランザクションタイプを保存
 		dto.setTransactionType("OUT");
 		// 保存
-		InventoryDataDto savedDto = inventoryDataRepository.save(dto);
+		final InventoryDataDto savedDto = inventoryDataRepository.save(dto);
 
 		return new ResponseInOut(savedDto.getTransactionId(), savedDto.getProductId(), savedDto.getQuantity(),
 				currentStock, "OUT", LocalDateTime.now());
