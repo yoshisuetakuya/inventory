@@ -3,6 +3,7 @@ package com.example.inventory_management.service;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import com.example.inventory_management.dto.InventoryDataDto;
 import com.example.inventory_management.dto.ProductsDto;
@@ -35,6 +36,7 @@ public class InventoryDataService {
 	 * @param dto
 	 * @return　入荷処理結果レスポンス
 	 */
+	@CacheEvict(value = "stockCache", key="#p0.productId")
 	public ResponseInOut arrival(InventoryDataDto dto) {
 		// 商品情報を取得
 		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
@@ -66,6 +68,7 @@ public class InventoryDataService {
 	 * @param dto
 	 * @return　出荷処理結果レスポンス
 	 */
+	@CacheEvict(value = "stockCache", key="#p0.productId")
 	public ResponseInOut shipment(InventoryDataDto dto) {
 		// 商品情報を取得
 		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);

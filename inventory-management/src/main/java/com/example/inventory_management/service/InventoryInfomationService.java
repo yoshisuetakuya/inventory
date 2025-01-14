@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.inventory_management.dto.ProductsDto;
@@ -40,7 +41,9 @@ public class InventoryInfomationService {
 	 * @param productId
 	 * @return 在庫情報
 	 */
+	@Cacheable(value = "stockCache", key="#p0")
 	public StockResponse getStockByProductId(UUID productId) {
+
 		// 現在の在庫数を取得
 		final Long currentStock = calculateCurrentStock(productId);
 

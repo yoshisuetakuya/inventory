@@ -22,6 +22,13 @@ import com.example.inventory_management.dto.ProductsDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
+/**
+ *
+ * @author 芳末 拓也
+ *
+ *         各APIのテストを行うクラス
+ *
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class APIControllerTest {
@@ -32,8 +39,12 @@ public class APIControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	/**
+	 * 登録、取得、照会、入荷、出荷、在庫数を取得、期間内の取引情報の取得まで一連の流れでテストするメソッド
+	 *
+	 * @throws Exception
+	 */
 	@Test
-	// 登録、取得、照会、入荷、出荷、在庫数を取得、期間内の取引情報の取得まで一連の流れでテストする
 	void APITest() throws Exception {
 
 		// 1.商品登録APIのテスト
