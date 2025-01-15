@@ -34,9 +34,9 @@ public class InventoryDataService {
 	 * 商品入荷処理メソッド
 	 *
 	 * @param dto
-	 * @return　入荷処理結果レスポンス
+	 * @return 入荷処理結果レスポンス
 	 */
-	@CacheEvict(value = "stockCache", key="#p0.productId")
+	@CacheEvict(value = "stockCache", key = "#p0.productId")
 	public ResponseInOut arrival(InventoryDataDto dto) {
 		// 商品情報を取得
 		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);
@@ -66,9 +66,9 @@ public class InventoryDataService {
 	 * 商品出荷処理メソッド
 	 *
 	 * @param dto
-	 * @return　出荷処理結果レスポンス
+	 * @return 出荷処理結果レスポンス
 	 */
-	@CacheEvict(value = "stockCache", key="#p0.productId")
+	@CacheEvict(value = "stockCache", key = "#p0.productId")
 	public ResponseInOut shipment(InventoryDataDto dto) {
 		// 商品情報を取得
 		final ProductsDto product = productsRepository.findById(dto.getProductId()).orElse(null);

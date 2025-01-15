@@ -41,7 +41,7 @@ public class InventoryInfomationService {
 	 * @param productId
 	 * @return 在庫情報
 	 */
-	@Cacheable(value = "stockCache", key="#p0")
+	@Cacheable(value = "stockCache", key = "#p0")
 	public StockResponse getStockByProductId(UUID productId) {
 
 		// 現在の在庫数を取得
@@ -49,12 +49,18 @@ public class InventoryInfomationService {
 
 		final ProductsDto productInfo = productsRepository.findById(productId).orElse(null);
 
+		if (productInfo == null) {
+	        throw new IllegalArgumentException("指定された商品が見つかりません。productId: " + productId);
+	    }
+
+
 		// StockResponseを作成して返す
 		return new StockResponse(productId, currentStock, productInfo.getMinStockLevel(), productInfo.getLastUpdated());
 	}
 
 	/**
 	 * 期間内の取引情報取得メソッド
+	 *
 	 * @param productId
 	 * @param from
 	 * @param to
@@ -74,6 +80,10 @@ public class InventoryInfomationService {
 	public Long calculateCurrentStock(UUID productId) {
 		// productIdで検索し合計値を取得
 		final List<TransactionSumDto> transactionSum = transactionSumRepository.getQuantityByTransactionType(productId);
+
+		if (transactionSum == null) {
+	        throw new IllegalArgumentException("見つかりませんでした。");
+	    }
 
 		Long inQuantity = 0L;
 		Long outQuantity = 0L;
