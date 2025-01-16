@@ -82,7 +82,7 @@ public class InventoryInfomationService {
 		final List<TransactionSumDto> transactionSum = transactionSumRepository.getQuantityByTransactionType(productId);
 
 		if (transactionSum == null) {
-	        throw new IllegalArgumentException("見つかりませんでした。");
+	        throw new IllegalArgumentException("商品が見つかりませんでした。");
 	    }
 
 		Long inQuantity = 0L;
