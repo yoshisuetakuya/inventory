@@ -1,5 +1,6 @@
 package com.example.inventory_management.controller;
 
+import org.springframework.http.HttpHeaders;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.inventory_management.dto.GetProductsDto;
@@ -20,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 /**
  *
@@ -44,15 +47,32 @@ public class ProductsController {
 	@ApiResponses({ @ApiResponse(responseCode = "200", description = "商品情報の取得に成功"),
 			@ApiResponse(responseCode = "404", description = "指定された商品が見つからない場合"),
 			@ApiResponse(responseCode = "500", description = "サーバーエラー") })
-
 	@GetMapping("/api/v1/products/{productId}")
 	public ResponseEntity<GetProductsDto> getProductById(
-			@Parameter(description = "商品ID", required = true) @PathVariable("productId") UUID productId) {
+			@Parameter(description = "商品ID", required = true) @PathVariable("productId") UUID productId,
+			@RequestHeader(value = HttpHeaders.IF_NONE_MATCH, required = false) String ifNoneMatch) {
 		try {
 			// 商品情報を取得
-			GetProductsDto product = productsService.getProductById(productId);
-			// 商品が見つかった場合
-			return ResponseEntity.ok(product);
+			ProductsDto product = productsService.getProductById(productId);
+
+			// 商品が見つからない場合
+			if (product == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			}
+
+			// Etagを生成
+			String etag = "\"" + productsService.generateEtag(product) + "\"";
+			// ProductsDtoをGetProductsDtoに変換
+			GetProductsDto getProductDto = productsService.convertToGetProductsDto(product);
+
+			// If-None-Matchヘッダーと比較して、Etagが一致する場合は304を返す
+			if (etag.equals(ifNoneMatch)) {
+				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+			}
+
+			// 更新があった場合は、新しくレスポンスにEtagヘッダーを追加して商品を返す
+			return ResponseEntity.ok().eTag(etag).body(getProductDto);
+
 		} catch (IllegalArgumentException e) {
 			// 商品が見つからなかった場合
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -70,7 +90,7 @@ public class ProductsController {
 			@ApiResponse(responseCode = "400", description = "入力データが不正な場合"),
 			@ApiResponse(responseCode = "500", description = "サーバーエラー") })
 	@PostMapping("/api/v1/products")
-	public ResponseEntity<RegisterResponse> registerProducts(@RequestBody ProductsDto dto) {
+	public ResponseEntity<RegisterResponse> registerProducts(@Valid @RequestBody ProductsDto dto) {
 		// 登録処理
 		RegisterResponse savedProduct = productsService.register(dto);
 		// 登録された商品情報を返す

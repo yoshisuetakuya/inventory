@@ -14,6 +14,7 @@ import com.example.inventory_management.service.InventoryDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 /**
  *
@@ -39,7 +40,7 @@ public class InventoryDataController {
 			@ApiResponse(responseCode = "400", description = "リクエストデータが不正"),
 			@ApiResponse(responseCode = "500", description = "サーバーエラー") })
 	@PostMapping("/api/v1/inventory/in")
-	public ResponseEntity<ResponseInOut> arrive(@RequestBody InventoryDataDto dto) {
+	public ResponseEntity<ResponseInOut> arrive(@Valid @RequestBody InventoryDataDto dto) {
 		final ResponseInOut arrival = inventoryDataService.arrival(dto);
 		return ResponseEntity.status(HttpStatus.OK).body(arrival);
 
@@ -56,7 +57,7 @@ public class InventoryDataController {
 			@ApiResponse(responseCode = "400", description = "リクエストデータが不正"),
 			@ApiResponse(responseCode = "500", description = "サーバーエラー") })
 	@PostMapping("/api/v1/inventory/out")
-	public ResponseEntity<ResponseInOut> ship(@RequestBody InventoryDataDto dto) {
+	public ResponseEntity<ResponseInOut> ship(@Valid @RequestBody InventoryDataDto dto) {
 		final ResponseInOut shipping = inventoryDataService.shipment(dto);
 		return ResponseEntity.status(HttpStatus.OK).body(shipping);
 	}

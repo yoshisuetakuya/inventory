@@ -19,7 +19,7 @@ public class StockResponse {
 	private UUID productId;
 	private Long currentStock;
 	private int minStockLevel;
-	private LocalDateTime lastUpdated;
+	private LocalDateTime lastUpdated= LocalDateTime.now();
 
 	public StockResponse(UUID productId, Long currentStock, int minStockLevel, LocalDateTime lastUpdated) {
 		this.productId = productId;

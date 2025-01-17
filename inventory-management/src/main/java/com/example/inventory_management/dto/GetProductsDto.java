@@ -37,7 +37,7 @@ public class GetProductsDto {
 	private Integer categoryId;
 
 	@Column(name = "current_stock")
-	private Integer currentStock;
+	private Long currentStock;
 
 	@Column(name = "min_stock_level")
 	private Integer minStockLevel;

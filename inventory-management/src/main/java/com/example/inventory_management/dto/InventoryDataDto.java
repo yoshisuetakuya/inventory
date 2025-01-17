@@ -9,6 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,9 +33,11 @@ public class InventoryDataDto {
 	@Column(name = "transaction_id")
 	private UUID transactionId;
 
+	@NotNull(message = "商品IDは必須項目です")
 	@Column(name = "product_id")
 	private UUID productId;
 
+	@Min(value = 0, message = "数量は0以上で入力してください")
 	@Column(name = "quantity")
 	private Integer quantity;
 
@@ -42,9 +47,11 @@ public class InventoryDataDto {
 	@Column(name = "timestamp")
 	private LocalDateTime timestamp = LocalDateTime.now();
 
+	@Size(max = 50, message = "ロケーションIDは最大50文字までです")
 	@Column(name = "location_id")
 	private String locationId;
 
+	@Size(max = 200, message = "メモは最大200文字までです")
 	@Column(name = "note")
 	private String note;
 
