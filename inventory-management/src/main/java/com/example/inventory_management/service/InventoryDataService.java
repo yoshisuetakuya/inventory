@@ -5,11 +5,15 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.inventory_management.dto.InventoryDataDto;
 import com.example.inventory_management.dto.ProductsDto;
 import com.example.inventory_management.repository.InventoryDataRepository;
 import com.example.inventory_management.repository.ProductsRepository;
 import com.example.inventory_management.response.ResponseInOut;
+
 
 /**
  *
@@ -68,6 +72,7 @@ public class InventoryDataService {
 	 * @param dto
 	 * @return 出荷処理結果レスポンス
 	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@CacheEvict(value = "stockCache", key = "#p0.productId")
 	public ResponseInOut shipment(InventoryDataDto dto) {
 		// 商品情報を取得
