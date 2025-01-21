@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.example.inventory_management.dto.GetProductsDto;
 import com.example.inventory_management.dto.ProductsDto;
 import com.example.inventory_management.repository.ProductsRepository;
 import com.example.inventory_management.response.RegisterResponse;
+import com.example.inventory_management.response.UpdateProductResponse;
 
 /**
  *
@@ -85,6 +87,50 @@ public class ProductsService {
 		getProductDto.setMinStockLevel(product.getMinStockLevel());
 
 		return getProductDto;
+	}
+
+	/**
+	 * 商品情報を更新するメソッド
+	 *
+	 * @param productId 更新対象の商品ID
+	 * @param dto       更新する商品情報
+	 * @return 更新された商品情報
+	 */
+	// 商品情報の更新
+	public UpdateProductResponse updateProduct(UUID productId, ProductsDto dto) {
+		// 商品情報を取得
+		ProductsDto product = productsRepository.findById(productId).orElse(null);
+
+		// 商品が見つからない場合
+		if (product == null) {
+			throw new IllegalArgumentException("指定された商品が見つかりません");
+		}
+
+		// 最初に取得したlastUpdatedを保持
+		LocalDateTime initialLastUpdated = product.getLastUpdated();
+
+		System.out.println(product.getLastUpdated());
+		System.out.println(dto.getLastUpdated());
+		// 更新前に競合がないかチェック（現在のlastUpdatedと最初に取得したlastUpdatedを比較）
+		if (!initialLastUpdated.equals(dto.getLastUpdated())) {
+			throw new OptimisticLockingFailureException("競合が発生しました");
+		}
+
+		// 更新処理
+		product.setName(dto.getName());
+		product.setDescription(dto.getDescription());
+		product.setPrice(dto.getPrice());
+		product.setCategoryId(dto.getCategoryId());
+		product.setMinStockLevel(dto.getMinStockLevel());
+		product.setLastUpdated(LocalDateTime.now());
+
+		// 保存して更新された商品を返す
+		ProductsDto updatedProduct = productsRepository.save(product);
+
+		return new UpdateProductResponse(updatedProduct.getId(), updatedProduct.getName(),
+				updatedProduct.getDescription(), updatedProduct.getPrice(), updatedProduct.getCategoryId(),
+				updatedProduct.getMinStockLevel(), updatedProduct.getLastUpdated());
+
 	}
 
 }

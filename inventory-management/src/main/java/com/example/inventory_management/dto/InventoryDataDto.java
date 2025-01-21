@@ -45,7 +45,7 @@ public class InventoryDataDto {
 	private String transactionType;
 
 	@Column(name = "timestamp")
-	private LocalDateTime timestamp = LocalDateTime.now();
+	private LocalDateTime timestamp= LocalDateTime.now();
 
 	@Size(max = 50, message = "ロケーションIDは最大50文字までです")
 	@Column(name = "location_id")

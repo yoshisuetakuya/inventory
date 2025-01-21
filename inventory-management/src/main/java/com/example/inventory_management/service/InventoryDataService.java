@@ -1,7 +1,6 @@
 package com.example.inventory_management.service;
 
 import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -58,6 +57,7 @@ public class InventoryDataService {
 
 		// 入荷のトランザクションタイプを保存
 		dto.setTransactionType("IN");
+
 		// 保存
 		final InventoryDataDto savedDto = inventoryDataRepository.save(dto);
 
